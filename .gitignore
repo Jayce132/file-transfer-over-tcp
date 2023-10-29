@@ -1,38 +1,75 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Byte-compiled / optimized / DLL files
+/client/__pycache__/
+/client/*.py[cod]
+/client/*$py.class
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
-*.iml
-*.ipr
+# C extensions
+/client/*.so
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Distribution / packaging for client
+/client/.Python
+/client/build/
+/client/develop-eggs/
+/client/dist/
+/client/downloads/
+/client/eggs/
+/client/.eggs/
+/client/lib/
+/client/lib64/
+/client/parts/
+/client/sdist/
+/client/var/
+/client/wheels/
+/client/pip-wheel-metadata/
+/client/share/python-wheels/
+/client/*.egg-info/
+/client/.installed.cfg
+/client/*.egg
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# PyCharm specific files for client
+/client/.idea/
+/client/*.iml
 
-### VS Code ###
-.vscode/
+# IntelliJ IDEA specific files for server
+/server/.idea/
+/server/*.iml
+/server/*.iws
 
-### Mac OS ###
+# macOS Finder specific files
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+
+# Logs and databases
+*.log
+*.sqlite
+
+# Virtual environment for client
+/client/venv/
+/client/*.venv
+/client/*.pyenv
+/client/.env/
+
+# Compiled class files for server
+/server/*.class
+
+# Package Files for server
+/server/*.jar
+/server/*.war
+/server/*.ear
+/server/*.zip
+/server/*.tar.gz
+/server/*.rar
+
+# Gradle (if you are using it in server)
+/server/.gradle/
+
+# Maven (if you are using it in server)
+/server/target/
