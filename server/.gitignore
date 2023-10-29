@@ -1,0 +1,21 @@
+# IntelliJ IDEA specific files
+.idea/
+*.iml
+*.iws
+
+# Compiled class files
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Gradle (if you are using it)
+.gradle/
+
+# Maven (if you are using it)
+target/

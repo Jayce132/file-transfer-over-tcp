@@ -1,40 +1,3 @@
-# Byte-compiled / optimized / DLL files
-/client/__pycache__/
-/client/*.py[cod]
-/client/*$py.class
-
-# C extensions
-/client/*.so
-
-# Distribution / packaging for client
-/client/.Python
-/client/build/
-/client/develop-eggs/
-/client/dist/
-/client/downloads/
-/client/eggs/
-/client/.eggs/
-/client/lib/
-/client/lib64/
-/client/parts/
-/client/sdist/
-/client/var/
-/client/wheels/
-/client/pip-wheel-metadata/
-/client/share/python-wheels/
-/client/*.egg-info/
-/client/.installed.cfg
-/client/*.egg
-
-# PyCharm specific files for client
-/client/.idea/
-/client/*.iml
-
-# IntelliJ IDEA specific files for server
-/server/.idea/
-/server/*.iml
-/server/*.iws
-
 # macOS Finder specific files
 .DS_Store
 .AppleDouble
@@ -50,26 +13,3 @@
 # Logs and databases
 *.log
 *.sqlite
-
-# Virtual environment for client
-/client/venv/
-/client/*.venv
-/client/*.pyenv
-/client/.env/
-
-# Compiled class files for server
-/server/*.class
-
-# Package Files for server
-/server/*.jar
-/server/*.war
-/server/*.ear
-/server/*.zip
-/server/*.tar.gz
-/server/*.rar
-
-# Gradle (if you are using it in server)
-/server/.gradle/
-
-# Maven (if you are using it in server)
-/server/target/
