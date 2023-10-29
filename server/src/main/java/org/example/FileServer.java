@@ -27,6 +27,19 @@ public class FileServer {
     }
 
     public static void main(String[] args) {
+        // Check if the directory exists, if not create it
+        Path serverDirPath = Paths.get(SERVER_DIR);
+        try {
+            if (!Files.exists(serverDirPath)) {
+                Files.createDirectory(serverDirPath);
+                System.out.println("[*] Directory '" + SERVER_DIR + "' created.");
+            }
+        } catch (IOException e) {
+            System.err.println("[-] Failed to create directory: " + SERVER_DIR);
+            e.printStackTrace();
+            return;
+        }
+
         try (ServerSocket serverSocket = new ServerSocket(SERVER_PORT)) {
             System.out.println("[*] Listening on localhost:" + SERVER_PORT);
             while (true) {
