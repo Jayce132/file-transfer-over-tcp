@@ -85,6 +85,17 @@ public class FileServer {
 
                             sendUTF(out, "File uploaded successfully!");
                             System.out.println("[*] File received: " + filename);
+                        } else if ("DOWNLOAD".equals(command)) {
+                            String filename = receiveUTF(in);
+                            Path filePath = Paths.get(SERVER_DIR, filename);
+                            if (Files.exists(filePath)) {
+                                byte[] fileContent = Files.readAllBytes(filePath);
+                                out.writeInt(fileContent.length);
+                                out.write(fileContent);
+                                System.out.println("[*] File sent: " + filename);
+                            } else {
+                                sendUTF(out, "Error: File not found!");
+                            }
                         }
                     } catch (EOFException e) {
                         System.out.println("[-] Client disconnected");

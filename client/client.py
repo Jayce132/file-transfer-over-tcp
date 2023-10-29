@@ -3,6 +3,7 @@ import os
 
 SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 12345
+RECEIVED_FILES_DIR = "received_files"
 
 
 def send_utf_string(socket, text):
@@ -24,8 +25,12 @@ def receive_utf_string(socket):
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((SERVER_HOST, SERVER_PORT))
 
+if not os.path.exists(RECEIVED_FILES_DIR):
+    os.makedirs(RECEIVED_FILES_DIR)
+    print(f"[*] Directory '{RECEIVED_FILES_DIR}' created.")
+
 while True:
-    print("\nCommand: UPLOAD")
+    print("\nCommands: UPLOAD DOWNLOAD")
     command = input("Enter command: ").upper()
 
     if command == "UPLOAD":
@@ -49,3 +54,33 @@ while True:
         # Obtain confirmation from the server.
         confirmation = receive_utf_string(client_socket)
         print(confirmation)
+
+    elif command == "DOWNLOAD":
+        filename = input("Enter the name of the file you want to download: ")
+
+        send_utf_string(client_socket, command)
+        send_utf_string(client_socket, filename)
+
+        # Receive the file length, then the file content
+        file_length_bytes = client_socket.recv(4)
+        file_length = int.from_bytes(file_length_bytes, byteorder='big')
+
+        # Loop to ensure all bytes of the file are received
+        chunks = []
+        bytes_received = 0
+        while bytes_received < file_length:
+            chunk = client_socket.recv(
+                min(file_length - bytes_received, 4096))  # 4096 is just a buffer size, can be adjusted
+            if not chunk:
+                break
+            chunks.append(chunk)
+            bytes_received += len(chunk)
+        file_content = b''.join(chunks)
+
+        if file_content.startswith(b"Error:"):
+            print(file_content.decode())
+        else:
+            file_path = os.path.join(RECEIVED_FILES_DIR, filename)
+            with open(file_path, "wb") as f:
+                f.write(file_content)
+            print(f"File '{filename}' downloaded successfully!")
