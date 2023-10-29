@@ -30,43 +30,63 @@ public class FileServer {
         try (ServerSocket serverSocket = new ServerSocket(SERVER_PORT)) {
             System.out.println("[*] Listening on localhost:" + SERVER_PORT);
             while (true) {
-                try (Socket clientSocket = serverSocket.accept();
-                     DataInputStream in = new DataInputStream(clientSocket.getInputStream());
-                     DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream())) {
+                Socket clientSocket = serverSocket.accept();
+                // For every client, spawn a new thread
+                new Thread(new ClientHandler(clientSocket)).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-                    System.out.println("[+] Client connected: " + clientSocket.getRemoteSocketAddress());
+    public static class ClientHandler implements Runnable {
+        private Socket clientSocket;
 
-                    while (true) {
-                        try {
-                            String command = receiveUTF(in);
+        public ClientHandler(Socket socket) {
+            this.clientSocket = socket;
+        }
 
-                            if ("UPLOAD".equals(command)) {
-                                int filenameLength = in.readInt();
-                                byte[] filenameBytes = new byte[filenameLength];
-                                in.readFully(filenameBytes);
-                                String filename = new String(filenameBytes);
+        @Override
+        public void run() {
+            try (DataInputStream in = new DataInputStream(clientSocket.getInputStream());
+                 DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream())) {
 
-                                int fileContentLength = in.readInt();
-                                byte[] fileContent = new byte[fileContentLength];
-                                in.readFully(fileContent);
+                System.out.println("[+] Client connected: " + clientSocket.getRemoteSocketAddress());
 
-                                Path filePath = Paths.get(SERVER_DIR, filename);
-                                Files.write(filePath, fileContent);
+                while (true) {
+                    try {
+                        String command = receiveUTF(in);
 
-                                sendUTF(out, "File uploaded successfully!");
-                                System.out.println("[*] File received: " + filename);
-                            }
-                        } catch (EOFException e) {
-                            System.out.println("[-] Client disconnected");
-                            break;
+                        if ("UPLOAD".equals(command)) {
+                            int filenameLength = in.readInt();
+                            byte[] filenameBytes = new byte[filenameLength];
+                            in.readFully(filenameBytes);
+                            String filename = new String(filenameBytes);
+
+                            int fileContentLength = in.readInt();
+                            byte[] fileContent = new byte[fileContentLength];
+                            in.readFully(fileContent);
+
+                            Path filePath = Paths.get(SERVER_DIR, filename);
+                            Files.write(filePath, fileContent);
+
+                            sendUTF(out, "File uploaded successfully!");
+                            System.out.println("[*] File received: " + filename);
                         }
+                    } catch (EOFException e) {
+                        System.out.println("[-] Client disconnected");
+                        break;
                     }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    clientSocket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
