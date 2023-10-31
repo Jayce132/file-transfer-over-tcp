@@ -56,6 +56,16 @@ while True:
         print(confirmation)
 
     elif command == "DOWNLOAD":
+        # First, request a list of available files from the server
+        send_utf_string(client_socket, "LIST")
+        file_list = receive_utf_string(client_socket)
+        if file_list:
+            print("Available files for download:")
+            print(file_list)
+        else:
+            print("No files available for download.")
+            continue
+
         filename = input("Enter the name of the file you want to download: ")
 
         send_utf_string(client_socket, command)

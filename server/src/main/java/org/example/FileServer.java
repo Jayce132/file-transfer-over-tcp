@@ -96,6 +96,17 @@ public class FileServer {
                             } else {
                                 sendUTF(out, "Error: File not found!");
                             }
+                        } else if ("LIST".equals(command)) {
+                            File[] files = new File(SERVER_DIR).listFiles();
+                            StringBuilder fileList = new StringBuilder();
+                            if (files != null) {
+                                for (File file : files) {
+                                    if (file.isFile()) {
+                                        fileList.append(file.getName()).append("\n");
+                                    }
+                                }
+                            }
+                            sendUTF(out, fileList.toString());
                         }
                     } catch (EOFException e) {
                         System.out.println("[-] Client disconnected");
